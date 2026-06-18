@@ -21,6 +21,16 @@
     "url": "https://github.com/ricatix/pi-9router/issues"
   },
   "keywords": ["pi", "pi-coding-agent", "9router", "llm", "ai", "provider", "extension"],
+  "license": "MIT",
+  "engines": {
+    "node": ">=18",
+    "bun": ">=1.1.0"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/",
+    "provenance": true
+  },
   "scripts": {
     "build": "tsc -p tsconfig.json",
     "test": "bun test",
