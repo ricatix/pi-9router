@@ -1,0 +1,35 @@
+{
+  "name": "pi-9router",
+  "version": "0.1.0",
+  "description": "Pi Coding Agent extension for 9router with dynamic model discovery and local cache.",
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "files": ["dist", "src", "README.md"],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ricatix/pi-9router.git"
+  },
+  "homepage": "https://github.com/ricatix/pi-9router#readme",
+  "bugs": {
+    "url": "https://github.com/ricatix/pi-9router/issues"
+  },
+  "keywords": ["pi", "pi-coding-agent", "9router", "llm", "ai", "provider", "extension"],
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "test": "bun test",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
+  },
+  "devDependencies": {
+    "@earendil-works/pi-coding-agent": "^0.79.6",
+    "@types/bun": "latest",
+    "@types/node": "latest",
+    "typescript": "latest"
+  }
+}
