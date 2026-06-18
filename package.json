@@ -1,6 +1,6 @@
 {
   "name": "pi-9router",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Pi Coding Agent extension for 9router with dynamic model discovery and local cache.",
   "type": "module",
   "main": "dist/index.js",
