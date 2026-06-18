@@ -2,10 +2,13 @@
 
 [![npm version](https://img.shields.io/npm/v/pi-9router.svg)](https://www.npmjs.com/package/pi-9router)
 [![npm downloads](https://img.shields.io/npm/dm/pi-9router.svg)](https://www.npmjs.com/package/pi-9router)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/ricatix/pi-9router/blob/main/LICENSE)
+[![GitHub release](https://img.shields.io/github/v/release/ricatix/pi-9router.svg)](https://github.com/ricatix/pi-9router/releases)
 
 Pi Coding Agent extension for [9router](https://9router.com): register 9router as a Pi provider, discover models dynamically, enrich model metadata, and manage configuration from Pi with `/9router`.
 
 Repository: <https://github.com/ricatix/pi-9router>
+npm package: <https://www.npmjs.com/package/pi-9router>
 
 ## Why this exists
 
@@ -376,4 +379,4 @@ Report security issues privately through GitHub once repository security advisor
 
 ## License
 
-License not declared yet. Add `LICENSE` before public npm release.
+[MIT](https://opensource.org/licenses/MIT) © 2026 ricatix. See [LICENSE](https://github.com/ricatix/pi-9router/blob/main/LICENSE) for the full text.
