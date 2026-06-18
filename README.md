@@ -104,6 +104,12 @@ Example:
 
 Restart Pi after changing packages.
 
+> **Note:** Pi's npm/git package loader discovers extensions through the
+> `pi.extensions` manifest in `package.json`. This package declares
+> `pi.extensions: ["./dist/index.js"]`, so no extra wiring is required — Pi will
+> import the built entry-point on startup. Local-path installs also work, but
+> rely on a different fallback path in the host.
+
 ## Configuration
 
 You can configure 9router by environment variables or by `/9router setup`.
@@ -232,6 +238,41 @@ Web search/fetch tools are not exposed in this release.
 7. If no API key exists, Pi still loads and `/9router setup` remains available.
 
 ## Troubleshooting
+
+### `/9router` command is not registered
+
+Pi's package loader only auto-loads an extension entry-point if the package
+declares it through the `pi.extensions` field in `package.json`. This package
+ships with:
+
+```json
+{
+  "pi": {
+    "extensions": ["./dist/index.js"]
+  }
+}
+```
+
+If `/9router` is missing after `pi install npm:pi-9router`:
+
+1. Verify the installed `package.json` has the `pi.extensions` field:
+   ```bash
+   cat ~/.pi/agent/npm/node_modules/pi-9router/package.json | grep -A2 '"pi"'
+   ```
+2. If absent, your installed version is older than `0.1.2`. Reinstall:
+   ```bash
+   pi install npm:pi-9router
+   ```
+3. Restart Pi (or run `/reload`) so the new manifest is picked up.
+4. Confirm the package is loaded:
+   ```bash
+   pi list
+   ```
+   `npm:pi-9router` should appear under **User packages**.
+
+Local-path installs (`local:/path/to/pi-9router`) hide this issue because the
+host falls back to importing `dist/index.js` even without the manifest — but
+the manifest is still required for `npm:` and `git:` sources.
 
 ### `API key belum ada`
 

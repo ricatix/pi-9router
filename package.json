@@ -1,6 +1,6 @@
 {
   "name": "pi-9router",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Pi Coding Agent extension for 9router with dynamic model discovery and local cache.",
   "type": "module",
   "main": "dist/index.js",
@@ -21,6 +21,9 @@
     "url": "https://github.com/ricatix/pi-9router/issues"
   },
   "keywords": ["pi", "pi-coding-agent", "9router", "llm", "ai", "provider", "extension"],
+  "pi": {
+    "extensions": ["./dist/index.js"]
+  },
   "license": "MIT",
   "engines": {
     "node": ">=18",
