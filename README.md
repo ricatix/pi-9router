@@ -339,24 +339,75 @@ Before publishing:
 3. Confirm `dist/` is fresh.
 4. Confirm README install commands point to the intended npm package.
 5. Confirm no secrets in config, cache, shell history, or test fixtures.
-6. Tag release in GitHub.
-7. Publish to npm.
+6. Pick the next version (semver): `MAJOR.MINOR.PATCH` for stable, `MAJOR.MINOR.PATCH-rc.N` for pre-release.
+7. Push the tag — the workflow handles the rest.
 
-Build and publish:
+Stable release:
+
+```bash
+git tag v0.2.0
+git push origin v0.2.0
+# workflow runs typecheck + test + build + npm publish --provenance
+```
+
+Pre-release (lands under the `next` dist-tag, leaves `latest` untouched):
+
+```bash
+git tag v0.2.0-rc.1
+git push origin v0.2.0-rc.1
+```
+
+Manual one-off publish (requires `npm login` + 2FA OTP, no provenance):
 
 ```bash
 bun install
 bun run typecheck
 bun test
 bun run build
-npm publish
+npm publish --otp=<code>
 ```
 
 Install published package:
 
 ```bash
 pi install npm:pi-9router
+# or pin a pre-release
+pi install npm:pi-9router@next
 ```
+
+## Release & CI/CD
+
+The `.github/workflows/publish.yml` workflow runs on every `v*.*.*` tag push and:
+
+1. Installs Bun + Node 24 + latest `npm` (npm 11.5.1+ is required for OIDC).
+2. Runs `bun install --frozen-lockfile`, `bun run typecheck`, `bun test`, `bun run build`.
+3. Syncs `package.json#version` to the pushed tag.
+4. Publishes to npm with `--provenance`. Pre-release tags are published under the `next` dist-tag.
+
+### Why Node 24 / npm 11.5.1+
+
+Trusted publishing via OIDC requires npm 11.5.1+ to perform the token exchange with npmjs.com. Node 22 ships with npm 10.x, which silently fails the OIDC handshake and surfaces a misleading `E404 'package@version' is not in this registry` error. Node 24 LTS ships with npm 11.x and works out of the box.
+
+### Why no `registry-url` on `setup-node`
+
+When you set `registry-url` on `actions/setup-node@v4`, the action writes a `//registry.npmjs.org/:_authToken=${NODE_AUTH_TOKEN}` line to `.npmrc`. With no `NODE_AUTH_TOKEN` secret configured (the intended state for OIDC), the placeholder expands to an empty string. npm then treats that as "auth is configured" and short-circuits the OIDC token exchange. The workflow sets the registry via `npm config set` instead.
+
+### One-time setup
+
+After the first manual publish, configure the trusted publisher at:
+
+<https://www.npmjs.com/package/pi-9router/access>
+
+with:
+
+| Field | Value |
+| --- | --- |
+| Repository owner / org | `ricatix` |
+| Repository name | `pi-9router` |
+| Workflow filename | `publish.yml` |
+| Environment name | *(leave empty)* |
+
+After that, every push of a `v*.*.*` tag is published automatically with no NPM_TOKEN secret.
 
 ## Security
 
