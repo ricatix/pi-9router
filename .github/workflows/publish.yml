@@ -87,6 +87,14 @@ jobs:
           test -f dist/index.d.ts
 
       - name: Publish to npm
-        run: npm publish --access public --provenance
+        run: |
+          set -euo pipefail
+          VERSION="${{ steps.version.outputs.version }}"
+          if [[ "$VERSION" == *-* ]]; then
+            # Pre-release version: tag it 'next' so it doesn't replace 'latest'
+            npm publish --access public --provenance --tag next
+          else
+            npm publish --access public --provenance
+          fi
         env:
           NPM_CONFIG_PROVENANCE: "true"
